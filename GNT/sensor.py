@@ -165,6 +165,7 @@ class GNTmap:
             return True
         return False
     def get_angle_gap(self,p1,p2):
+
         return  
     '''
     if connecting 2 blue dots: in middle of gap; ignore
@@ -173,6 +174,7 @@ class GNTmap:
     '''
     def checklines(self,threshold=50):
         Tree = []
+        Angles =[]
         closegap = False
         l = 1
         r = 1
@@ -180,7 +182,7 @@ class GNTmap:
                 if i[0] in self.gapcloud and i[2] in self.pointcloud or i[0] in self.pointcloud and i[2] in self.gapcloud:
                     if closegap != True:
                         if i[1] > i[3]:
-                           
+                            Angles.append(self.get_angle_gap(1[0],i[2]))
                             Tree.append('L{}'.format(l))
                             l+=1
                             pygame.draw.line(self.infomap,self.white,i[0],i[2])
@@ -211,4 +213,4 @@ class GNTmap:
     
     def CEhandler(self,gnt1,gnt2,threshold = 16):
         if len(gnt1) != len(gnt2):
-
+            return

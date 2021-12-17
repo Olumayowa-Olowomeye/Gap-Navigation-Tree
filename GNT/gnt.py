@@ -137,6 +137,8 @@ while running:
     robot.chasegap(gaps,dt)
     robot.checkbound(environment.floormap)
     robot.draw(environment.infomap)
+    print(math.degrees(ang))
+    print(robot.desired_angle)
     environment.map.blit(environment.infomap, (0,0))
     
     pygame.display.update()
