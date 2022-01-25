@@ -6,7 +6,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 from pygame.constants import MIDIIN
-import icp
 
 
 class GNTmap:
@@ -29,10 +28,12 @@ class GNTmap:
         self.red = (255, 0, 0)
         self.white = (255, 255, 255)
         self.black = (0,0,0)
+        self.l = 1
+        self.r = 1
         #gap history
         self.Treesave=[]
         self.Treehist = []
-
+        self.Angles = []
     def AD2pos(self,distance,angle,robopos):
         x = distance * math.cos(angle) + robopos[0]
         y = -distance * math.sin(angle) + robopos[1]
@@ -77,7 +78,9 @@ class GNTmap:
 
         self.drawlines(robopos)
 
-        check = self.checklines()
+        check = self.checklines(robopos)
+        self.Angles = check[1]
+        check = check[0]
         if self.Treesave == []:
             self.Treesave = check
             if self.Treehist ==[]:
@@ -94,7 +97,6 @@ class GNTmap:
                     self.Treehist.append(self.Treesave)
                 # else:
                 #    self.Treehist.append(self.CEhandler(self.Treehist[-1],self.Treesave))
-                print(check)
 
         self.pointcloud.clear()
         self.gapcloud.clear()
@@ -164,53 +166,63 @@ class GNTmap:
         if (ax-unc<= bx <= ax+unc) and (ay-unc<= by <= ay+unc):
             return True
         return False
-    def get_angle_gap(self,p1,p2):
-
-        return  
+    def get_angle_gap(self,p1,p2,robopos):
+        changeInX = p2[0] - robopos[0]
+        changeInY = p2[1] - robopos[1]
+        f1= math.degrees(math.atan2(changeInY,changeInX))
+        changeInX = p1[0] - robopos[0]
+        changeInY = p1[1] - robopos[1]
+        f2= math.degrees(math.atan2(changeInY,changeInX))
+        return (f1+f2)/2
     '''
     if connecting 2 blue dots: in middle of gap; ignore
     if connecting a blue and red dot: check distance and mark
     if connecting 2 red: check distance within threshold and mark
     '''
-    def checklines(self,threshold=50):
+    def checklines(self,robopos,threshold=50):
         Tree = []
         Angles =[]
         closegap = False
-        l = 1
-        r = 1
         for i in self.lines:
-                if i[0] in self.gapcloud and i[2] in self.pointcloud or i[0] in self.pointcloud and i[2] in self.gapcloud:
-                    if closegap != True:
+            l=0
+            r=0
+            if i[0] in self.gapcloud and i[2] in self.pointcloud or i[0] in self.pointcloud and i[2] in self.gapcloud:
+                if closegap != True:
+                    Angles.append(self.get_angle_gap(i[0],i[2],robopos))
+                    if i[1] > i[3]:
+                        Tree.append('L{}'.format(self.l))
+                        l+=1
+                        pygame.draw.line(self.infomap,self.white,i[0],i[2])
+                        
+                    else:
+                        Tree.append('R{}'.format(self.r))
+                        r+=1
+                        pygame.draw.line(self.infomap,self.blue,i[0],i[2])
+                    closegap =True
+                else:
+                    closegap = False
+            if i[0] in self.pointcloud and i[2] in self.pointcloud:
+                if self.adistance(i[0],i[2]) >= threshold and not self.checkdots(i[0],i[2]):
+                    if i[0][0] != i[2][0] and i[0][1] != i[2][1]:
+                        Angles.append(self.get_angle_gap(i[0],i[2],robopos))
                         if i[1] > i[3]:
-                            Angles.append(self.get_angle_gap(1[0],i[2]))
-                            Tree.append('L{}'.format(l))
+                            Tree.append('L{}'.format(self.l))
                             l+=1
                             pygame.draw.line(self.infomap,self.white,i[0],i[2])
                             
                         else:
-                            
-                            Tree.append('R{}'.format(r))
+                            Tree.append('R{}'.format(self.r))
                             r+=1
                             pygame.draw.line(self.infomap,self.blue,i[0],i[2])
-                        closegap =True
-                    else:
-                        closegap = False
-                if i[0] in self.pointcloud and i[2] in self.pointcloud:
-                    if self.adistance(i[0],i[2]) >= threshold and not self.checkdots(i[0],i[2]):
-                        if i[0][0] != i[2][0] and i[0][1] != i[2][1]:
-                            if i[1] > i[3]:
-                                Tree.append('L{}'.format(l))
-                                l+=1
-                                pygame.draw.line(self.infomap,self.white,i[0],i[2])
-                                
-                            else:
-                                Tree.append('R{}'.format(r))
-                                r+=1
-                                pygame.draw.line(self.infomap,self.blue,i[0],i[2])
-                                
-        return Tree
+        print([Tree,Angles])         
+        return [Tree,Angles]
     
-    
+    def chase(self):
+
+        return
+
     def CEhandler(self,gnt1,gnt2,threshold = 16):
+        G=nx.graph()
+        G.add_nodes_from(gnt1)
         if len(gnt1) != len(gnt2):
             return

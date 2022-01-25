@@ -10,3 +10,15 @@ look at foilation of manifolds*
 canonical shape I made of squares
 family of functions that continously change the shape of the squares
 
+
+knot theory but with gnt?
+Reidemeister moves
+Bresenham's line algorithm for lidar
+
+1. here is a gnt and generate an environment:
+    if this is the case then every tree we want should have a gnt
+
+Current to do by 1/18/21
+x implement Bresenham's line algorithm for lidar  
+- implement chase gap
+- implement CE handler
