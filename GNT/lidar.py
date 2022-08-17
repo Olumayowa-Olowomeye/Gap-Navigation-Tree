@@ -57,7 +57,8 @@ class Sensor:
         for angle in np.linspace(0,2*math.pi,360,False):
             angle+=ang
             x2,y2 = int(x1 + self.range * math.cos(angle)), int(y1 - self.range * math.sin(angle))
-            points =list(bresenham(x1,y1,x2,y2))
+            points = list(bresenham(x1,y1,x2,y2))
+            # print(points)
             for i in points:
                 x=i[0]
                 y=i[1]
@@ -67,7 +68,7 @@ class Sensor:
                     color = self.map.get_at((x,y))
                     if (color[0],color[1],color[2]) == (0,0,0):
                         break
-                    if i ==points[-1]:
+                    if i == points[-1]:
                         distance = self.distance((x,y))
                         output = uncertainty_add(distance, angle, self.sigma)
                         output.append(self.pos)
@@ -78,4 +79,21 @@ class Sensor:
         else:
             return False
 
+    def LMS_sensor(self,ang):
+        data = []
+        x1,y1 =  int(self.pos[0]),int(self.pos[1])
+        for angle in np.linspace(0,math.pi,180,False):
+            angle+=ang
+            x2,y2 = int(x1 + self.range * math.cos(angle)), int(y1 - self.range * math.sin(angle))
+            points = list(bresenham(x1,y1,x2,y2))
+            for i in points:
+                x = i[0]
+                y = i[1]
+                color = self.map.get_at((x,y))
+                if (color[0],color[1],color[2]) == (0,0,0):
+                    break
+                if i == points[-1] or (color[0],color[1],color[2]) == (0,0,0):
+                    distance = self.distance((x,y))
+                    data.append(distance)
+        return data
 

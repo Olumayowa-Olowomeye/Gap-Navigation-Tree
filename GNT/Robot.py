@@ -79,8 +79,12 @@ class Robot:
     #         self.move(dt)
 
         
-    
-    
+    def forward(self,x):
+        pass
+    def backward(self,x):
+        pass
+    def turn(self,theta):
+        pass
     def get_theta(self):
         return self.theta
     def getpos(self):
