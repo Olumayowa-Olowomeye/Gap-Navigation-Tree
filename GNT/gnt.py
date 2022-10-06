@@ -2,30 +2,28 @@
 from time import sleep
 import lidar
 import sensor
-import math
 import pygame
-import networkx as nx
-import matplotlib.pyplot as pltpy
 from simple_pid import PID
-import random
 import time
 from Robot import Robot
+import threading
 environment = sensor.GNTmap((600,1200))
 environment.originalMap = environment.map.copy()
-laser = lidar.Sensor(250,environment.originalMap,uncertainty=(0,0))
+laser = lidar.Sensor(600,environment.originalMap,uncertainty=(0,0))
 environment.map.fill((0,0,0))
 environment.infomap = environment.map.copy()
 #robot
 dt =0
-start = (402,395)
+start = (350,395)
 
 robot = Robot(start,'robot.png',0.01*3779.52)
 
-
+clock=pygame.time.Clock()
 lasttime = pygame.time.get_ticks()
 s= 0
 running = True
 while running:
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -45,26 +43,23 @@ while running:
     lasttime=pygame.time.get_ticks()
     pos = robot.getpos()
     ang = robot.get_theta()
-    # print(pos)
     laser.pos = pos
     sensor_data = laser.sense_obstacles(ang)
     gap_data = laser.sense_gaps(ang)
     environment.datastorage(sensor_data)
-    environment.datastoragegap(gap_data)
+    # environment.datastoragegap(gap_data)
+
     environment.showdata(pos,laser.range)
     robot.desired_angle = s
     # robot.chasegap(gaps,dt)
     robot.move(dt)
     robot.checkbound(environment.floormap)
     robot.draw(environment.infomap)
-    
-    # print(math.degrees(ang))
-    # print(robot.desired_angle)
     environment.map.blit(environment.infomap, (0,0))
     
     pygame.display.update()
     # environment.printdata()
-    # running =False
+    #running = False
     
 
 

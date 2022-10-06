@@ -1,6 +1,7 @@
 import pygame
 import math
 from simple_pid import PID
+import threading
 class Robot:
     def __init__(self,startpos,robotImg,width) -> None:
         self.m2p = 3780 #meters/pixels
@@ -10,8 +11,8 @@ class Robot:
         self.theta = 0
         self.vl = 0.001*self.m2p
         self.vr = 0.001*self.m2p
-        self.maxspeed = 0.01*self.m2p
-        self.minspeed = 0.01*self.m2p
+        self.maxspeed = 0.03*self.m2p
+        self.minspeed = 0.03*self.m2p
         self.pid = PID()
 
         self.img = pygame.image.load(robotImg)
