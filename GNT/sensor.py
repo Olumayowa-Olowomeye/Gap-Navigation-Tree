@@ -101,7 +101,7 @@ class GNTmap:
         self.lines=[]
         if self.gapcloudang!= False and self.pointcloudang!= False:
             dots = self.gapcloudang + self.pointcloudang
-#            dots.sort(key = lambda x: x[1])
+            dots.sort(key = lambda x: x[1])
 
             for i in range(0,len(dots)-1):
                 x = self.AD2pos(dots[i][0],dots[i][1],dots[i][2])
@@ -109,10 +109,10 @@ class GNTmap:
                 self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
                 pygame.draw.line(self.infomap,(0,255,0),x,y)
 
-            pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
-            x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
-            y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
-            self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
+            # pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
+            # x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
+            # y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
+            # self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
 
         if self.gapcloudang== False and self.pointcloudang!= False:
             dots = self.pointcloudang
@@ -124,10 +124,10 @@ class GNTmap:
                 self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
                 pygame.draw.line(self.infomap,(0,255,0),x,y)
 
-            pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
-            x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
-            y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
-            self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
+            # pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
+            # x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
+            # y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
+            # self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
 
         if self.gapcloudang!= False and self.pointcloudang== False:
             dots = self.gapcloudang
@@ -139,10 +139,10 @@ class GNTmap:
                 self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
                 pygame.draw.line(self.infomap,(0,255,0),x,y)
 
-            pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
-            x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
-            y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
-            self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
+            # pygame.draw.line(self.infomap,(0,255,0),self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2]),self.AD2pos(dots[0][0],dots[0][1],dots[0][2]))
+            # x = self.AD2pos(dots[-1][0],dots[-1][1],dots[-1][2])
+            # y = self.AD2pos(dots[0][0],dots[0][1],dots[0][2])
+            # self.lines.append([x,self.adistance(x,robopos),y,self.adistance(y,robopos)])
 
     def adistance(self,obspos,robopos):
         px = (obspos[0]-robopos[0])**2

@@ -44,7 +44,7 @@ while running:
     pos = robot.getpos()
     ang = robot.get_theta()
     laser.pos = pos
-    sensor_data = laser.sense_obstacles(ang)
+    sensor_data = laser.sense_all(ang)
     gap_data = laser.sense_gaps(ang)
     environment.datastorage(sensor_data)
     # environment.datastoragegap(gap_data)
